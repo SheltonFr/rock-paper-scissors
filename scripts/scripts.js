@@ -1,5 +1,18 @@
+const btns = document.querySelectorAll('.play');
+const result = document.querySelector('.result');
+const h3 = result.firstElementChild;
+
+const pScore = document.querySelector('#player');
+const cScore = document.querySelector('#computer');
+
+
+
+
 let playerScore = 0;
 let computerScore = 0;
+
+pScore.textContent = playerScore;
+cScore.textContent = computerScore;
 
 function getComputerSelection() {
     const weapons = ['rock', 'paper', 'scissors'];
@@ -35,14 +48,38 @@ function playRound(playerSelection, computerSelection) {
 
 }
 
-function game() {
-    for (let i = 0; i < 5; i++) {
-        const computerSelection = getComputerSelection();
-        const playerSelection = window.prompt('Rock Paper or Scissors?');
-        console.log(playRound(playerSelection, computerSelection));
-    }
 
-    alert(`player: ${playerScore} - computer: ${computerScore}`);
+const displayResult  = function(roundResult) {
+    h3.textContent = roundResult;
 }
 
-game();
+const updateScores = function() {
+    pScore.textContent = playerScore;
+    cScore.textContent = computerScore;
+}
+
+const getWinner = function() {
+    if(playerScore == 5 || computerScore == 5) {
+        let winner = (playerScore == 5) ? 'Player' : 'Computer';
+        alert(`${winner} have won the game!!!`);
+
+        playerScore = 0;
+        computerScore = 0;
+        updateScores();
+    } 
+}
+
+function game(playerSelection) {
+    const computerSelection = getComputerSelection();
+    let roundResult = playRound(playerSelection, computerSelection);
+    displayResult(roundResult);
+    updateScores();
+    getWinner();
+}
+
+btns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+        game(btn.getAttribute('id'));
+    })
+})
+
